@@ -3,16 +3,16 @@ import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 
 const milestones = [
     {
-        year: '2022',
+        year: '2023',
         title: 'Started Coding Journey',
-        description: 'Dived into the world of programming with C++ and DSA foundations.',
+        description: 'Dived into the world of programming with Java and DSA foundations.',
         emoji: '🚀',
         bg: '#F4C430',
         shadow: '#d4a800',
         tag: 'THE BEGINNING',
     },
     {
-        year: '2023',
+        year: '2024',
         title: 'Full Stack Exploration',
         description: 'Mastered the MERN stack and built several full-stack applications.',
         emoji: '⚡',
@@ -21,7 +21,7 @@ const milestones = [
         tag: 'LEVEL UP',
     },
     {
-        year: '2024',
+        year: '2025',
         title: 'Open Source & Projects',
         description: 'Contributing to open source and building scalable real-world solutions.',
         emoji: '🌍',
@@ -31,8 +31,8 @@ const milestones = [
     },
     {
         year: 'Now',
-        title: 'Mastering Advanced DSA',
-        description: 'Solving complex algorithmic problems and refining system design skills.',
+        title: 'Mastering Backend & Advanced DSA',
+        description: 'Mastering backend engineering, solving complex algorithmic problems, and refining system design skills.',
         emoji: '🏆',
         bg: '#1A535C',
         shadow: '#0d2e33',
