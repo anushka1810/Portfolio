@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { HiOutlineMail, HiOutlineLocationMarker } from 'react-icons/hi';
-import { SiLinkedin, SiInstagram } from 'react-icons/si';
+import { SiLinkedin, SiInstagram, SiWhatsapp } from 'react-icons/si';
 import { useEmailJS } from '../../../hooks/useEmailJS';
 import Button from '../../ui/Button';
 import BouncyText from '../../ui/BouncyText';
@@ -69,16 +69,59 @@ const Contact = () => {
                                     <p className="text-lg text-text-primary font-bold font-display">India (Open to Remote)</p>
                                 </div>
                             </div>
+
+                            <div className="flex items-center gap-6 group">
+                                <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#25D366] group-hover:bg-[#25D366] group-hover:text-white shadow-soft transition-all duration-300">
+                                    <SiWhatsapp size={24} />
+                                </div>
+                                <div>
+                                    <p className="text-text-secondary text-[10px] font-black uppercase tracking-widest mb-1">WhatsApp</p>
+                                    <a
+                                        href="https://wa.me/919936992241"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-lg text-text-primary hover:text-[#25D366] transition-colors font-bold font-display"
+                                    >
+                                        +91 9936992241
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-6 group">
+                                <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#0A66C2] group-hover:bg-[#0A66C2] group-hover:text-white shadow-soft transition-all duration-300">
+                                    <SiLinkedin size={24} />
+                                </div>
+                                <div>
+                                    <p className="text-text-secondary text-[10px] font-black uppercase tracking-widest mb-1">LinkedIn</p>
+                                    <a
+                                        href="https://linkedin.com/in/anuj-yadav-158a47298"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-lg text-text-primary hover:text-[#0A66C2] transition-colors font-bold font-display"
+                                    >
+                                        anuj-yadav-158a47298
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div className="flex items-center gap-6 group">
+                                <div className="w-14 h-14 bg-white rounded-2xl flex items-center justify-center text-[#E4405F] group-hover:bg-[#E4405F] group-hover:text-white shadow-soft transition-all duration-300">
+                                    <SiInstagram size={24} />
+                                </div>
+                                <div>
+                                    <p className="text-text-secondary text-[10px] font-black uppercase tracking-widest mb-1">Instagram</p>
+                                    <a
+                                        href="https://instagram.com/ig_anuj_18"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="text-lg text-text-primary hover:text-[#E4405F] transition-colors font-bold font-display"
+                                    >
+                                        ig_anuj_18
+                                    </a>
+                                </div>
+                            </div>
                         </div>
 
-                        <div className="flex gap-4 mt-12">
-                            <a href="https://linkedin.com/in/anuj-yadav-158a47298" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-text-secondary hover:text-white hover:bg-accent-teal shadow-soft transition-all">
-                                <SiLinkedin size={18} />
-                            </a>
-                            <a href="https://instagram.com/ig_anuj_18" target="_blank" rel="noopener noreferrer" className="w-12 h-12 bg-white rounded-xl flex items-center justify-center text-text-secondary hover:text-white hover:bg-accent-gold shadow-soft transition-all">
-                                <SiInstagram size={18} />
-                            </a>
-                        </div>
                     </motion.div>
 
                     <motion.div

@@ -9,7 +9,9 @@ const navLinks = [
     { name: 'About', to: 'about' },
     { name: 'Skills', to: 'skills' },
     { name: 'Projects', to: 'projects' },
+    { name: 'Achievements', to: 'achievements' },
     { name: 'Certifications', to: 'certifications' },
+    { name: 'Resume', to: 'resume' },
     { name: 'Contact', to: 'contact' },
 ];
 
@@ -26,7 +28,7 @@ const Navbar = () => {
     }, []);
 
     return (
-        <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'py-3 shadow-lg bg-white border-b-4 border-accent-teal' : 'py-5 bg-white border-b-4 border-accent-teal'}`}>
+        <nav className={`fixed top-4 left-4 right-4 z-50 transition-all duration-300 rounded-full backdrop-blur-3xl shadow-lg ${isScrolled ? 'py-3 bg-white/20' : 'py-5 bg-white/10'} `}>
             <div className="container mx-auto px-6 flex justify-between items-center">
                 <motion.div
                     initial={{ opacity: 0, x: -20 }}
@@ -42,7 +44,7 @@ const Navbar = () => {
 
                 {/* Desktop Links */}
                 <div className="hidden md:flex items-center gap-10">
-                    <div className="flex gap-8">
+                    <div className="flex gap-5">
                         {navLinks.map((link, i) => (
                             <motion.div
                                 key={link.name}
@@ -56,7 +58,7 @@ const Navbar = () => {
                                     smooth={true}
                                     offset={-70}
                                     duration={500}
-                                    className="text-sm font-black text-text-secondary cursor-pointer uppercase tracking-widest flex"
+                                    className="text-xs font-black text-text-secondary cursor-pointer uppercase tracking-widest flex"
                                 >
                                     <BouncyText text={link.name} />
                                 </Link>

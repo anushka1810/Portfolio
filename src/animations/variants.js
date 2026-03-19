@@ -1,5 +1,3 @@
-import { motion } from 'framer-motion';
-
 export const fadeInUp = {
     initial: { y: 60, opacity: 0 },
     animate: { y: 0, opacity: 1 },

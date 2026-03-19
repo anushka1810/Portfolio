@@ -1,46 +1,63 @@
-export const findAnswer = (question, cvData) => {
+export const findAnswer = (question, profile) => {
   const q = question.toLowerCase().trim();
+  const normalized = q.replace(/[^\w\s+]/g, ' ').replace(/\s+/g, ' ').trim();
+  const skillsByCategory = profile.skills.reduce((acc, group) => {
+    acc[group.category] = group.skills.map((s) => s.name);
+    return acc;
+  }, {});
+  const allSkills = Object.values(skillsByCategory).flat();
+  const projects = profile.projects.map((p) => ({
+    ...p,
+    titleLower: p.title.toLowerCase(),
+  }));
+  const projectTokens = projects.map((p) => ({
+    title: p.title,
+    tokens: p.titleLower.replace(/[^\w\s]/g, ' ').split(/\s+/).filter(Boolean),
+  }));
 
   // Greeting
-  if (q.match(/^(hi|hello|hey|howdy|sup|yo|good morning|good afternoon|good evening)[\s!?]*$/)) {
+  if (normalized.match(/^(hi|hii|hiii|hello|hey|howdy|sup|yo|good morning|good afternoon|good evening)$/)) {
     return `👋 Hi there! I'm Anuj's virtual assistant. I can tell you about his skills, projects, achievements, certifications, education, and contact info. What would you like to know?`;
   }
 
-  // Who is Anuj / about
-  if (q.includes('who is') || q.includes('about anuj') || q.includes('tell me about') || q.includes('introduce') || q.includes('summary') || q.includes('background')) {
-    return `🙋 Anuj Yadav is a ${cvData.basics.title} based in ${cvData.basics.location}.\n\n${cvData.basics.summary}\n\nHe's currently pursuing B.Tech in Computer Science Engineering.`;
-  }
-
   // Projects — specific project queries
-  if (q.includes('nivana') || q.includes('mental wellness') || q.includes('wellness')) {
-    const p = cvData.projects.find(proj => proj.name.toLowerCase().includes('nivana'));
-    return p ? `🧘 **${p.name}** (${p.tech})\n\n${p.description}` : "I couldn't find details about that project.";
+  if (normalized.includes('nivana') || normalized.includes('mental wellness') || normalized.includes('wellness')) {
+    const p = projects.find(proj => proj.titleLower.includes('nivana'));
+    return p ? `🧘 **${p.title}** (${p.tech.join(', ')})\n\n${p.description}` : "I couldn't find details about that project.";
   }
 
-  if (q.includes('shortest path') || q.includes('dijkstra') || q.includes('graph') || q.includes('path finder')) {
-    const p = cvData.projects.find(proj => proj.name.toLowerCase().includes('shortest path'));
-    return p ? `🗺️ **${p.name}** (${p.tech})\n\n${p.description}` : "I couldn't find details about that project.";
+  if (normalized.includes('shortest path') || normalized.includes('dijkstra') || normalized.includes('graph') || normalized.includes('path finder')) {
+    const p = projects.find(proj => proj.titleLower.includes('shortest path'));
+    return p ? `🗺️ **${p.title}** (${p.tech.join(', ')})\n\n${p.description}` : "I couldn't find details about that project.";
   }
 
-  if (q.includes('volunteer hub') || q.includes('volunteer')) {
-    const p = cvData.projects.find(proj => proj.name.toLowerCase().includes('volunteer'));
-    return p ? `🤝 **${p.name}** (${p.tech})\n\n${p.description}` : "I couldn't find details about that project.";
+  if (normalized.includes('volunteer hub') || normalized.includes('volunteer')) {
+    const p = projects.find(proj => proj.titleLower.includes('volunteer'));
+    return p ? `🤝 **${p.title}** (${p.tech.join(', ')})\n\n${p.description}` : "I couldn't find details about that project.";
+  }
+
+  // Projects — "tell me about X" (generic)
+  if (normalized.startsWith('tell me about') || normalized.startsWith('about')) {
+    const match = projectTokens.find((p) => p.tokens.some((t) => normalized.includes(t)));
+    if (match) {
+      const p = projects.find((proj) => proj.title === match.title);
+      if (p) {
+        return `✨ **${p.title}** (${p.tech.join(', ')})\n\n${p.description}`;
+      }
+    }
+  }
+
+  // Who is Anuj / about
+  if (normalized.includes('who is') || normalized.includes('about anuj') || normalized.includes('introduce') || normalized.includes('summary') || normalized.includes('background')) {
+    return `🙋 ${profile.basics.name} is a ${profile.basics.title} based in ${profile.basics.location}.\n\n${profile.basics.summary}\n\nHe's currently pursuing ${profile.education[0]?.school || 'a degree in Computer Science Engineering'}.`;
   }
 
   // Projects — general
-  if (q.includes('project') || q.includes('build') || q.includes('built') || q.includes('portfolio') || q.includes('made') || q.includes('created') || q.includes('developed')) {
-    return `🚀 Anuj has worked on ${cvData.projects.length} key projects:\n\n${cvData.projects.map((p, i) => `${i + 1}. **${p.name}** (${p.tech})\n   ${p.description}`).join('\n\n')}`;
+  if (normalized.includes('project') || normalized.includes('build') || normalized.includes('built') || normalized.includes('portfolio') || normalized.includes('made') || normalized.includes('created') || normalized.includes('developed')) {
+    return `🚀 Anuj has worked on ${profile.projects.length} key projects:\n\n${profile.projects.map((p, i) => `${i + 1}. **${p.title}** (${p.tech.join(', ')})\n   ${p.description}`).join('\n\n')}`;
   }
 
   // Skills — specific tech
-  const allSkills = [
-    ...cvData.skills.languages,
-    ...cvData.skills.frontend,
-    ...cvData.skills.backend,
-    ...cvData.skills.database,
-    ...cvData.skills.tools
-  ];
-
   const mentionedSkill = allSkills.find(skill => {
     // Escape special regex chars (e.g. C++)
     const escaped = skill.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -49,7 +66,7 @@ export const findAnswer = (question, cvData) => {
     return pattern.test(q);
   });
   if (mentionedSkill) {
-    const category = Object.entries(cvData.skills).find(([, skills]) =>
+    const category = Object.entries(skillsByCategory).find(([, skills]) =>
       skills.map(s => s.toLowerCase()).includes(mentionedSkill.toLowerCase())
     );
     const categoryName = category ? category[0] : 'skills';
@@ -57,45 +74,67 @@ export const findAnswer = (question, cvData) => {
   }
 
   // Skills — general
-  if (q.includes('skill') || q.includes('know') || q.includes('tech') || q.includes('language') || q.includes('stack') || q.includes('frontend') || q.includes('backend') || q.includes('database') || q.includes('tools') || q.includes('experti')) {
-    return `💻 Anuj's technical skills:\n\n🔤 **Languages**: ${cvData.skills.languages.join(', ')}\n🎨 **Frontend**: ${cvData.skills.frontend.join(', ')}\n⚙️ **Backend**: ${cvData.skills.backend.join(', ')}\n🗄️ **Database**: ${cvData.skills.database.join(', ')}\n🛠️ **Tools**: ${cvData.skills.tools.join(', ')}`;
+  if (normalized.includes('skill') || normalized.includes('know') || normalized.includes('tech') || normalized.includes('language') || normalized.includes('stack') || normalized.includes('frontend') || normalized.includes('backend') || normalized.includes('database') || normalized.includes('tools') || normalized.includes('experti')) {
+    return `💻 Anuj's technical skills:\n\n${Object.entries(skillsByCategory).map(([cat, skills]) => `• **${cat}**: ${skills.join(', ')}`).join('\n')}`;
   }
 
   // Education
-  if (q.includes('education') || q.includes('study') || q.includes('college') || q.includes('university') || q.includes('degree') || q.includes('btech') || q.includes('b.tech') || q.includes('student') || q.includes('studying') || q.includes('qualification')) {
-    return `🎓 ${cvData.education.status} — **${cvData.education.degree}**\n\n${cvData.education.details}`;
-  }
-
-  // Achievements
-  if (q.includes('achievement') || q.includes('award') || q.includes('star') || q.includes('hackerrank') || q.includes('dsa') || q.includes('problem solving') || q.includes('leetcode') || q.includes('competitive') || q.includes('accomplish')) {
-    return `🏆 Anuj's achievements:\n\n${cvData.achievements.map(a => `• ${a}`).join('\n')}`;
+  if (normalized.includes('education') || normalized.includes('study') || normalized.includes('college') || normalized.includes('university') || normalized.includes('degree') || normalized.includes('btech') || normalized.includes('b tech') || normalized.includes('student') || normalized.includes('studying') || normalized.includes('qualification')) {
+    const edu = profile.education[0];
+    return edu
+      ? `🎓 ${edu.status} — **${edu.school}**\n\n${edu.details}`
+      : "🎓 Education details are not available right now.";
   }
 
   // DSA Profiles
-  if (q.includes('profile') || q.includes('codolio') || q.includes('geeksforgeeks') || q.includes('gfg') || q.includes('coding profile') || q.includes('competitive programming')) {
-    return `📊 Anuj's coding profiles:\n\n• 🟡 LeetCode: ${cvData.dsaProfiles.leetcode}\n• 🟢 HackerRank: ${cvData.dsaProfiles.hackerrank}\n• 🟢 GeeksForGeeks: ${cvData.dsaProfiles.geeksforgeeks}\n• 🔵 Codolio: ${cvData.dsaProfiles.codolio}`;
+  if (normalized.includes('profile') || normalized.includes('codolio') || normalized.includes('geeksforgeeks') || normalized.includes('gfg') || normalized.includes('coding profile') || normalized.includes('competitive programming')) {
+    return `📊 Anuj's coding profiles:\n\n• 🟡 LeetCode: ${profile.dsaProfiles.leetcode}\n• 🟢 HackerRank: ${profile.dsaProfiles.hackerrank}\n• 🟢 GeeksForGeeks: ${profile.dsaProfiles.geeksforgeeks}\n• 🔵 Codolio: ${profile.dsaProfiles.codolio}`;
+  }
+
+  // Achievements
+  if (normalized.includes('achievement') || normalized.includes('award') || normalized.includes('star') || normalized.includes('hackerrank') || normalized.includes('dsa') || normalized.includes('problem solving') || normalized.includes('leetcode') || normalized.includes('competitive') || normalized.includes('accomplish')) {
+    return `🏆 Anuj's achievements:\n\n${profile.achievements.map(a => `• ${a.title}`).join('\n')}`;
+  }
+
+  // DSA counts / problems solved
+  if (
+    normalized.includes('problems solved') ||
+    normalized.includes('problem solved') ||
+    normalized.includes('questions solved') ||
+    normalized.includes('question solved') ||
+    normalized.includes('solved') ||
+    normalized.includes('total solved') ||
+    normalized.includes('dsa stats')
+  ) {
+    const totalSolved = profile.dsaStats.reduce((acc, curr) => acc + curr.problemsSolved, 0);
+    return `🧠 DSA progress:\n\n• Total solved: **${totalSolved}**\n${profile.dsaStats.map(s => `• ${s.platform}: ${s.problemsSolved} (${s.rating})`).join('\n')}\n\nWant profile links too? Just ask "DSA profiles".`;
+  }
+
+  // Follow-up confirmations
+  if (normalized === 'yes' || normalized === 'yes please' || normalized === 'sure' || normalized === 'ok' || normalized === 'okay') {
+    return `📊 Anuj's coding profiles:\n\n• 🟡 LeetCode: ${profile.dsaProfiles.leetcode}\n• 🟢 HackerRank: ${profile.dsaProfiles.hackerrank}\n• 🟢 GeeksForGeeks: ${profile.dsaProfiles.geeksforgeeks}\n• 🔵 Codolio: ${profile.dsaProfiles.codolio}`;
   }
 
   // Certifications
-  if (q.includes('certif') || q.includes('course') || q.includes('nptel') || q.includes('oracle') || q.includes('mongodb') || q.includes('freecodecamp') || q.includes('credential') || q.includes('badge')) {
-    return `📜 Anuj's certifications:\n\n${cvData.certifications.map(c => `• ${c}`).join('\n')}`;
+  if (normalized.includes('certif') || normalized.includes('course') || normalized.includes('nptel') || normalized.includes('oracle') || normalized.includes('mongodb') || normalized.includes('freecodecamp') || normalized.includes('credential') || normalized.includes('badge')) {
+    return `📜 Anuj's certifications:\n\n${profile.certifications.map(c => `• ${c.title}`).join('\n')}`;
   }
 
   // Contact / social
-  if (q.includes('contact') || q.includes('email') || q.includes('reach') || q.includes('hire') || q.includes('connect') || q.includes('linkedin') || q.includes('github') || q.includes('social')) {
-    return `📬 You can reach Anuj here:\n\n📧 **Email**: ${cvData.basics.email}\n💼 **LinkedIn**: ${cvData.social.linkedin}\n🐙 **GitHub**: ${cvData.social.github}`;
+  if (normalized.includes('contact') || normalized.includes('email') || normalized.includes('reach') || normalized.includes('hire') || normalized.includes('connect') || normalized.includes('linkedin') || normalized.includes('github') || normalized.includes('social') || normalized.includes('phone') || normalized.includes('whatsapp') || normalized.includes('instagram')) {
+    return `📬 You can reach Anuj here:\n\n📧 **Email**: ${profile.basics.email}\n📱 **Phone**: ${profile.contact?.phone || 'N/A'}\n💬 **WhatsApp**: ${profile.contact?.whatsapp || 'N/A'}\n💼 **LinkedIn**: ${profile.social.linkedin}\n📸 **Instagram**: ${profile.social.instagram || 'N/A'}\n🐙 **GitHub**: ${profile.social.github}`;
   }
 
   // Experience / work
-  if (q.includes('experience') || q.includes('internship') || q.includes('intern') || q.includes('job') || q.includes('work experience')) {
-    return `💼 Anuj is currently a student and has built strong practical experience through personal projects including a MERN stack wellness platform, algorithm visualizers, and volunteer management systems. He's actively looking for internship and full-time opportunities!\n\n📬 Reach him at: ${cvData.basics.email}`;
+  if (normalized.includes('experience') || normalized.includes('internship') || normalized.includes('intern') || normalized.includes('job') || normalized.includes('work experience')) {
+    return `💼 Anuj is currently a student and has built strong practical experience through personal projects including a MERN stack wellness platform, algorithm visualizers, and volunteer management systems. He's actively looking for internship and full-time opportunities!\n\n📬 Reach him at: ${profile.basics.email}`;
   }
 
   // Location
-  if (q.includes('locat') || q.includes('where') || q.includes('country') || q.includes('city') || q.includes('based')) {
-    return `📍 Anuj is based in **${cvData.basics.location}** and is open to remote opportunities.`;
+  if (normalized.includes('locat') || normalized.includes('where') || normalized.includes('country') || normalized.includes('city') || normalized.includes('based')) {
+    return `📍 Anuj is based in **${profile.basics.location}** and is open to remote opportunities.`;
   }
 
   // Fallback
-  return `🤔 I'm not sure about that! Try asking me about:\n\n• 💻 Skills & tech stack\n• 🚀 Projects\n• 🎓 Education\n• 🏆 Achievements\n• 📜 Certifications\n• 📬 Contact info\n\nOr reach Anuj directly at **${cvData.basics.email}**!`;
+  return `🤔 I'm not sure about that! Try asking me about:\n\n• 💻 Skills & tech stack\n• 🚀 Projects\n• 🎓 Education\n• 🏆 Achievements\n• 📜 Certifications\n• 📬 Contact info\n\nOr reach Anuj directly at **${profile.basics.email}**!`;
 };

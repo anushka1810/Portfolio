@@ -1,5 +1,5 @@
 import { useState, useCallback, useRef } from 'react';
-import { cvData } from './cvData';
+import { profile } from '../../data/profile';
 import { findAnswer } from './matcher';
 
 const INITIAL_MESSAGE = {
@@ -56,7 +56,7 @@ export const useChatbot = () => {
     // Simulate typing delay (400–900ms)
     const delay = 400 + Math.random() * 500;
     typingTimeoutRef.current = setTimeout(() => {
-      const botReply = findAnswer(trimmedMessage, cvData);
+      const botReply = findAnswer(trimmedMessage, profile);
       const botMsg = {
         id: Date.now() + 1,
         text: botReply,

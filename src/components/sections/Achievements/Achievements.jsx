@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import achievementsData from '../../../data/achievements.json';
+import { profile } from '../../../data/profile';
 import BouncyText from '../../ui/BouncyText';
 
 const Achievements = () => {
@@ -16,7 +16,7 @@ const Achievements = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    {achievementsData.map((achievement, i) => (
+                    {profile.achievements.map((achievement, i) => (
                         <motion.div
                             key={achievement.title}
                             initial={{ opacity: 0, y: 30 }}

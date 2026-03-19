@@ -49,6 +49,7 @@
     font-family: "Bricolage Grotesque", sans-serif;
     color: #1A1A1A;
     font-weight: 800;
+    font-style: italic;
   }
 
   * {
@@ -208,15 +209,39 @@
   }
 
   /* === Section Divider Wiggle === */
-  .section-divider {
-    width: 80px;
-    height: 12px;
-    margin: 0 auto;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='12' viewBox='0 0 80 12'%3E%3Cpath d='M0 6 Q10 0 20 6 Q30 12 40 6 Q50 0 60 6 Q70 12 80 6' stroke='%23F4833D' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: center;
-  }
+.section-divider {
+  width: 80px;
+  height: 12px;
+  margin: 0 auto;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='12' viewBox='0 0 80 12'%3E%3Cpath d='M0 6 Q10 0 20 6 Q30 12 40 6 Q50 0 60 6 Q70 12 80 6' stroke='%23F4833D' stroke-width='3' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
 }
+}
+
+/* === Certification Flip Cards === */
+.cert-flip-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.7s ease;
+}
+
+.group:hover .cert-flip-card {
+  transform: rotateY(180deg);
+}
+
+.cert-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+.cert-back {
+  transform: rotateY(180deg);
+}
+
 
 /* === Animations === */
 @keyframes float {

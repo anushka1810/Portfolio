@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
 import Navbar from './components/layout/Navbar';
 import Hero from './components/sections/Hero/Hero';
 import About from './components/sections/About/About';
 import Skills from './components/sections/Skills/Skills';
 import Projects from './components/sections/Projects/Projects';
 import DSAProfile from './components/sections/DSA/DSAProfile';
+import Achievements from './components/sections/Achievements/Achievements';
 import Certifications from './components/sections/Certifications/Certifications';
+import Resume from './components/sections/Resume/Resume';
 
 import Contact from './components/sections/Contact/Contact';
 import PageTransition from './components/layout/PageTransition';
@@ -24,7 +25,9 @@ function App() {
           <Skills />
           <Projects />
           <DSAProfile />
+          <Achievements />
           <Certifications />
+          <Resume />
           <Contact />
         </main>
         <footer
@@ -52,4 +55,3 @@ function App() {
 }
 
 export default App;
-

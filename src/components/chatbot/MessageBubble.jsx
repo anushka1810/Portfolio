@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 
-const MessageBubble = ({ message, index }) => {
+const MessageBubble = ({ message }) => {
   const isBot = message.sender === 'bot';
 
   // Convert simple markdown-like bold (**text**) to styled spans

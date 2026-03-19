@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as IconsSI from 'react-icons/si';
 import * as IconsFA from 'react-icons/fa';
-import skillsData from '../../../data/skills.json';
+import { profile } from '../../../data/profile';
 import BouncyText from '../../ui/BouncyText';
 
 const Skills = () => {
@@ -44,11 +44,11 @@ const Skills = () => {
 
     const activeColor = categoryColors[activeTab] || '#1A535C';
 
-    const allCategories = ['All Skills', ...skillsData.map(c => c.category)];
+    const allCategories = ['All Skills', ...profile.skills.map(c => c.category)];
 
     const displayedSkills = activeTab === 'All Skills'
-        ? skillsData.flatMap(c => c.skills)
-        : (skillsData.find(c => c.category === activeTab)?.skills || []);
+        ? profile.skills.flatMap(c => c.skills)
+        : (profile.skills.find(c => c.category === activeTab)?.skills || []);
 
     return (
         <section id="skills" className="py-10 relative overflow-hidden bg-[#FDFCF0]">
@@ -112,7 +112,7 @@ const Skills = () => {
                         exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
                         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
                     >
-                        {displayedSkills.map((skill, i) => {
+                        {displayedSkills.map((skill) => {
                             const IconComponent = IconsSI[skill.icon] || IconsFA[skill.icon];
                             // If showing all skills, use a color mapping or fallback for icons
                             const skillColor = activeTab === 'All Skills' ? '#1A535C' : activeColor;

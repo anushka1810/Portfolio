@@ -22,7 +22,7 @@
         ],
         "github": "https://github.com/anuj-yd/SHORTEST-PATH-FINDER-IN-A-CITY-USING-GRAPHS-DIJKSTRA-S-ALGORITHM",
         "live": "https://anuj-yd.github.io/SHORTEST-PATH-FINDER-IN-A-CITY-USING-GRAPHS-DIJKSTRA-S-ALGORITHM-/",
-        "image": "https://images.unsplash.com/photo-1738082956220-a1f20a8632ce?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8ZGF0YSUyMHN0cnVjdHVyZXMlMjBhbGdvcml0aG0lMjBncmFwaHxlbnwwfHwwfHx8MA%3D%3D"
+        "image": "/assets/SPF.png"
     },
     {
         "title": "Volunteer Management System",
@@ -35,19 +35,7 @@
             "HTML5"
         ],
         "github": "https://github.com/anuj-yd/Volunteer-management-system",
-        "live": "https://github.com/anuj-yd/Volunteer-management-system",
-        "image": "https://images.unsplash.com/photo-1557660559-42497f78035b?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fHZvbHVudGVlcnxlbnwwfHwwfHx8MA%3D%3D"
-    },
-    {
-        "title": "Symptom Checker ChatBot",
-        "description": "Python-based health utility designed to analyze symptoms and provide potential medical insights.",
-        "tech": [
-            "Python",
-            "Logic",
-            "HealthTech"
-        ],
-        "github": "https://github.com/anuj-yd/Symptom_Checker",
-        "live": "https://github.com/anuj-yd/Symptom_Checker",
-        "image": "https://media.istockphoto.com/id/1401308161/photo/the-word-symptoms-on-a-wooden-block-next-to-a-stethoscope.jpg?s=612x612&w=0&k=20&c=ePBkbeZScVnCRo1JLeg1BX0290gfB4jtZkmA4ymurtc="
+        "live": "https://anuj-yd.github.io/Volunteer-management-system/",
+        "image": "/assets/VMS.png"
     }
 ]

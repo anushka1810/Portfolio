@@ -1,7 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FaExternalLinkAlt } from 'react-icons/fa';
-import projectsData from '../../../data/projects.json';
+import { profile } from '../../../data/profile';
 import ProjectCard from './ProjectCard';
 import BouncyText from '../../ui/BouncyText';
 
@@ -18,7 +17,7 @@ const Projects = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {projectsData.map((project, i) => (
+                    {profile.projects.map((project, i) => (
                         <motion.div
                             key={project.title}
                             initial={{ opacity: 0, y: 30 }}
