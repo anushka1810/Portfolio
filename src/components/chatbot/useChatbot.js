@@ -4,7 +4,7 @@ import { findAnswer } from './matcher';
 
 const INITIAL_MESSAGE = {
   id: 1,
-  text: `👋 Hi! I'm Anuj's virtual assistant. I can answer questions about his skills, projects, education, certifications, and more!\n\nWhat would you like to know?`,
+  text: `👋 Hi! I'm Anushka's virtual assistant. I can answer questions about her skills, projects, education, certifications, and more!\n\nWhat would you like to know?`,
   sender: 'bot',
   timestamp: new Date()
 };

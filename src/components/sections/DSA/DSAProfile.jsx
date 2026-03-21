@@ -2,171 +2,79 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 import { profile } from '../../../data/profile';
-import BouncyText from '../../ui/BouncyText';
 
 const DSAProfile = () => {
-    const chartData = profile.dsaStats.map(d => ({ name: d.platform, value: d.problemsSolved }));
-    const totalSolved = profile.dsaStats.reduce((acc, curr) => acc + curr.problemsSolved, 0);
+  const chartData = profile.dsaStats.map((d) => ({ name: d.platform, value: d.problemsSolved }));
+  const totalSolved = profile.dsaStats.reduce((acc, curr) => acc + curr.problemsSolved, 0);
 
-    return (
-        <section id="dsa" className="py-12 relative overflow-hidden bg-white/50">
-            {/* Background Decorations */}
-            <div className="absolute top-40 right-10 w-64 h-64 bg-accent-teal/5 rounded-full blur-3xl" />
-            <div className="absolute bottom-20 left-10 w-48 h-48 bg-accent-gold/5 rounded-full blur-3xl" />
+  return (
+    <section id="dsa" className="relative overflow-hidden bg-[#050505] text-white py-16">
+      <div className="absolute top-[10%] left-[7%] h-48 w-48 rounded-full bg-[#2563eb]/20 blur-3xl" />
+      <div className="absolute bottom-[10%] right-[7%] h-48 w-48 rounded-full bg-[#f59e0b]/20 blur-3xl" />
 
-            <div className="container mx-auto px-6 relative z-10">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-display font-black mb-5 text-text-primary">
-                        <BouncyText text="DSA " />
-                        <span className="highlight-pill-teal"><BouncyText text="Statistics" colorOffset={4} /></span>
-                    </h2>
-                    <div className="section-divider" />
-                    <p className="max-w-xl mx-auto text-text-secondary font-medium text-lg mt-6">
-                        Tracking my algorithmic progress across major competitive programming platforms.
-                    </p>
-                </div>
+      <div className="relative z-10 mx-auto w-full max-w-[1450px] px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 flex items-end justify-between gap-4 flex-wrap">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-400">Performance</p>
+            <h2 className="mt-2 text-4xl md:text-5xl font-black font-display text-white">DSA Dashboard</h2>
+          </div>
+          <div className="h-[2px] w-24 bg-gradient-to-r from-[#2563eb] to-[#f59e0b] rounded-full" />
+        </div>
 
-                <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-                    {/* Platform Cards */}
-                    <motion.div
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.1 }}
-                        className="grid sm:grid-cols-2 gap-6"
-                    >
-                        {profile.dsaStats.map((stat, i) => (
-                            <motion.div
-                                key={stat.platform}
-                                whileHover={{ y: -10, rotate: i % 2 === 0 ? 0.6 : -0.6 }}
-                                className="bg-white rounded-[2.5rem] p-8 relative overflow-hidden group border-[3.5px] border-[#1A1A1A] flex flex-col items-center text-center"
-                                style={{
-                                    boxShadow: `8px 8px 0px ${stat.color}`,
-                                }}
-                            >
-                                {/* Soft platform glow */}
-                                <div
-                                    className="absolute -inset-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
-                                    style={{
-                                        background: `radial-gradient(120px 120px at 20% 10%, ${stat.color}25, transparent 70%)`,
-                                    }}
-                                />
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-6">
+          <motion.div initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="xl:col-span-4 rounded-3xl border border-slate-700 bg-slate-900/70 p-6 smooth-card">
+            <p className="text-xs uppercase tracking-[0.18em] text-slate-400">Total Solved</p>
+            <h3 className="mt-3 text-6xl font-black text-white">{totalSolved}</h3>
+            <p className="mt-2 text-slate-300">Problems solved across major coding platforms.</p>
 
-                                {/* Decorative platform color bar */}
-                                <div
-                                    className="absolute top-0 left-0 right-0 h-2"
-                                    style={{ background: stat.color }}
-                                />
-
-                                <a
-                                    href={stat.link}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-xl font-black mb-4 uppercase tracking-widest px-4 py-1 rounded-full text-white transition-all hover:scale-[1.04] focus:outline-none focus-visible:ring-2 focus-visible:ring-black"
-                                    style={{ background: stat.color, border: '2px solid #1A1A1A', boxShadow: '3px 3px 0 #1A1A1A' }}
-                                >
-                                    {stat.platform}
-                                </a>
-
-                                <div className="text-6xl font-black text-text-primary mb-1 tracking-tighter" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>
-                                    {stat.problemsSolved}
-                                </div>
-                                <div className="text-text-secondary text-[10px] font-black uppercase tracking-widest opacity-60">Problems Solved</div>
-
-                                <div
-                                    className="mt-6 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-wider border-2 border-[#1A1A1A] bg-white/90"
-                                    style={{
-                                        backgroundColor: `${stat.color}15`,
-                                        color: i === 3 ? '#1A1A1A' : stat.color,
-                                        boxShadow: `3px 3px 0px #1A1A1A`
-                                    }}
-                                >
-                                    {stat.rating}
-                                </div>
-
-                                {/* Floating icon/emoji based on platform */}
-                                <div className="absolute -bottom-4 -right-4 text-4xl opacity-[0.03] group-hover:opacity-10 group-hover:-translate-y-2 transition-all duration-500">
-                                    {stat.platform === 'LeetCode' && '🔥'}
-                                    {stat.platform === 'GeeksForGeeks' && '🌿'}
-                                    {stat.platform === 'HackerRank' && '⭐'}
-                                    {stat.platform === 'CodeChef' && '👨‍🍳'}
-                                </div>
-                            </motion.div>
-                        ))}
-                    </motion.div>
-
-                    {/* Chart Area */}
-                    <div className="relative p-10 bg-white rounded-[3rem] border-[4px] border-[#1A1A1A] shadow-[12px 12px 0px #1A535C] overflow-hidden group">
-                        {/* Decorative Chart Background */}
-                        <div className="absolute top-0 right-0 w-32 h-32 bg-accent-teal/5 rounded-full -mr-16 -mt-16 group-hover:scale-150 transition-transform duration-700" />
-                        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-accent-gold/10 rounded-full blur-2xl" />
-
-                        <div className="h-[380px] w-full relative z-10">
-                            <ResponsiveContainer width="100%" height="100%">
-                                <PieChart>
-                                    <Pie
-                                        data={chartData}
-                                        cx="50%"
-                                        cy="50%"
-                                        innerRadius={90}
-                                        outerRadius={140}
-                                        paddingAngle={10}
-                                        stroke="none"
-                                        dataKey="value"
-                                    >
-                                        {profile.dsaStats.map((entry, index) => (
-                                            <Cell
-                                                key={`cell-${index}`}
-                                                fill={entry.color}
-                                                className="hover:opacity-80 transition-opacity cursor-pointer"
-                                            />
-                                        ))}
-                                    </Pie>
-                                    <Tooltip
-                                        contentStyle={{
-                                            backgroundColor: '#1A1A1A',
-                                            border: 'none',
-                                            borderRadius: '12px',
-                                            padding: '12px 16px',
-                                            color: '#fff',
-                                            fontFamily: "'Bricolage Grotesque', sans-serif"
-                                        }}
-                                        itemStyle={{ color: '#fff' }}
-                                    />
-                                </PieChart>
-                            </ResponsiveContainer>
-
-                            {/* Center Content */}
-                            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center pointer-events-none">
-                                <motion.div
-                                    initial={{ scale: 0.8, opacity: 0 }}
-                                    whileInView={{ scale: 1, opacity: 1 }}
-                                    className="relative"
-                                >
-                                    {/* Rotating Ring around total */}
-                                    <div className="absolute -inset-10 rounded-full border-2 border-dashed border-gray-100 animate-spin-slow opacity-50" />
-
-                                    <div className="text-6xl font-black text-text-primary leading-none" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>
-                                        {totalSolved}
-                                    </div>
-                                    <div className="text-[11px] font-black text-text-secondary uppercase tracking-[0.2em] mt-2 opacity-50">Total<br />Solved</div>
-                                </motion.div>
-                            </div>
-                        </div>
-
-                        {/* Chart Legend / Hint */}
-                        <div className="mt-4 flex justify-center gap-6 flex-wrap relative z-10">
-                            {profile.dsaStats.map((stat, i) => (
-                                <div key={i} className="flex items-center gap-2">
-                                    <div className="w-3 h-3 rounded-full" style={{ background: stat.color }} />
-                                    <span className="text-[10px] font-black text-text-secondary uppercase tracking-widest">{stat.platform}</span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
+            <div className="mt-6 space-y-3">
+              {profile.dsaStats.map((stat) => (
+                <a key={stat.platform} href={stat.link} target="_blank" rel="noopener noreferrer" className="block rounded-2xl border border-slate-700 bg-slate-950/60 p-4 hover:border-[#f59e0b] transition smooth-card">
+                  <div className="flex items-center justify-between">
+                    <p className="text-sm font-semibold text-white">{stat.platform}</p>
+                    <span className="text-xs font-medium" style={{ color: stat.color }}>{stat.rating}</span>
+                  </div>
+                  <p className="mt-1 text-xs uppercase tracking-[0.18em] text-slate-400">{stat.problemsSolved} solved</p>
+                </a>
+              ))}
             </div>
-        </section>
-    );
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="xl:col-span-8 rounded-3xl border border-slate-700 bg-slate-900/70 p-6 md:p-8 smooth-card">
+            <div className="mb-4 flex items-center justify-between">
+              <p className="text-sm uppercase tracking-[0.18em] text-slate-400">Platform Distribution</p>
+              <span className="rounded-full border border-slate-700 bg-slate-950/60 px-3 py-1 text-xs text-slate-300">Live Snapshot</span>
+            </div>
+
+            <div className="h-[360px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie data={chartData} cx="50%" cy="50%" innerRadius={95} outerRadius={150} paddingAngle={8} dataKey="value" stroke="none">
+                    {profile.dsaStats.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={entry.color} className="cursor-pointer" />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    contentStyle={{ backgroundColor: '#0f172a', border: '1px solid #334155', borderRadius: '12px', color: '#fff' }}
+                    itemStyle={{ color: '#fff' }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="mt-2 grid grid-cols-2 md:grid-cols-4 gap-2">
+              {profile.dsaStats.map((stat) => (
+                <div key={stat.platform} className="rounded-xl border border-slate-700 bg-slate-950/60 p-3 text-center smooth-card">
+                  <div className="mx-auto mb-1 h-2 w-10 rounded-full" style={{ background: stat.color }} />
+                  <p className="text-xs font-semibold text-slate-200">{stat.platform}</p>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default DSAProfile;

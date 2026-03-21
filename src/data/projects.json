@@ -1,41 +1,44 @@
 [
-    {
-        "title": "Nivana",
-        "description": "A Self Identifying Mental Health Assessment Tool that helps users evaluate their emotional well-being through guided assessments and personalized insights.",
-        "tech": [
-            "MERN",
-            "GSAP",
-            "Tailwind CSS"
-        ],
-        "github": "https://github.com/anuj-yd/Nivana",
-        "live": "https://nivana.vercel.app/",
-        "image": "/assets/nivana.png"
-    },
-    {
-        "title": "Shortest Path Finder",
-        "description": "Visualizing Dijkstra's algorithm for finding the shortest path in a city using graph data structures.",
-        "tech": [
-            "JavaScript",
-            "HTML5",
-            "Tailwind CSS",
-            "Graphs"
-        ],
-        "github": "https://github.com/anuj-yd/SHORTEST-PATH-FINDER-IN-A-CITY-USING-GRAPHS-DIJKSTRA-S-ALGORITHM",
-        "live": "https://anuj-yd.github.io/SHORTEST-PATH-FINDER-IN-A-CITY-USING-GRAPHS-DIJKSTRA-S-ALGORITHM-/",
-        "image": "/assets/SPF.png"
-    },
-    {
-        "title": "Volunteer Management System",
-        "description": "A robust platform for managing organization volunteers, events, and tracking participation.",
-        "tech": [
-            "PHP",
-            "MySQL",
-            "jQuery",
-            "Tailwind CSS",
-            "HTML5"
-        ],
-        "github": "https://github.com/anuj-yd/Volunteer-management-system",
-        "live": "https://anuj-yd.github.io/Volunteer-management-system/",
-        "image": "/assets/VMS.png"
-    }
+  {
+    "title": "Nivana - Mental Health Platform",
+    "description": "Engineered a scalable full-stack MERN application with 10+ modules including authentication, mood tracking, and dashboards. Integrated an AI-powered self-assessment system using the Gemini API for personalized insights. Built wellness features like meditation, journaling, and mood analytics.",
+    "tech": [
+      "React.js",
+      "Node.js",
+      "Express.js",
+      "MongoDB",
+      "Tailwind CSS",
+      "Gemini API"
+    ],
+    "github": "https://github.com/anushka1810/Nivana",
+    "live": "https://nivana.vercel.app/",
+    "image": "/assets/nivana.png"
+  },
+  {
+    "title": "Shortest Path Visualizer",
+    "description": "Developed an interactive pathfinding visualizer using Dijkstra's Algorithm for shortest path computation. Built a dynamic UI with graph manipulation (nodes, edges, drag-and-drop). Optimized performance by 40% using a custom priority queue and efficient graph traversal.",
+    "tech": [
+      "JavaScript",
+      "HTML5",
+      "Tailwind CSS",
+      "Dijkstra's Algorithm"
+    ],
+    "github": "https://github.com/anushka1810/Shortest_Distance-",
+    "live": "https://anushka1810.github.io/Shortest_Distance-/",
+    "image": "/assets/SPF.png"
+  },
+  {
+    "title": "CouponSys - Coupon Management Platform",
+    "description": "Built a backend-driven coupon management system to generate, track, and manage coupons with expiry and redemption workflows. Implemented 15+ features including coupon generation, filtering, and admin dashboard controls. Processed 200+ transactions ensuring data accuracy.",
+    "tech": [
+      "PHP",
+      "MySQL",
+      "HTML5",
+      "Tailwind CSS",
+      "JavaScript"
+    ],
+    "github": "https://github.com/anushka1810/Dynamic_coupon_management_system",
+    "live": "",
+    "image": "/assets/coupon.png"
+  }
 ]

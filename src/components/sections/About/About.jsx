@@ -1,104 +1,74 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import AnimatedCounter from './AnimatedCounter';
 import Timeline from './Timeline';
-import BouncyText from '../../ui/BouncyText';
+import { profile } from '../../../data/profile';
+import { HiOutlineLocationMarker, HiOutlineAcademicCap, HiOutlineBriefcase, HiOutlineCode } from 'react-icons/hi';
 
 const About = () => {
-    const stats = [
-        { label: 'Years of Experience', value: '3', suffix: '+' },
-        { label: 'Projects Completed', value: '15', suffix: '+' },
-        { label: 'DSA Problems', value: '300', suffix: '+' },
-        { label: 'Technologies', value: '10', suffix: '+' },
-    ];
+  const quickFacts = [
+    { icon: HiOutlineLocationMarker, label: 'Location', value: 'India' },
+    { icon: HiOutlineAcademicCap, label: 'Education', value: 'B.Tech CSE (8.85 CGPA)' },
+    { icon: HiOutlineBriefcase, label: 'Experience', value: '1+ Year Developer' },
+    { icon: HiOutlineCode, label: 'DSA', value: '550+ Problems Solved' },
+  ];
 
-    return (
-        <section id="about" className="py-12 relative overflow-hidden">
-            <div className="absolute top-12 left-10 w-48 h-48 bg-accent-teal/5 rounded-full blur-3xl" />
-            <div className="absolute bottom-10 right-12 w-56 h-56 bg-accent-gold/10 rounded-full blur-3xl" />
+  const hobbies = ['Sketching', 'Music', 'Badminton', 'Traveling', 'Photography', 'Journaling'];
 
-            <div className="container mx-auto px-6 relative z-10">
-                <div className="text-center mb-12">
-                    <h2 className="text-4xl md:text-5xl font-display font-black mb-5">
-                        <BouncyText text="About " />
-                        <span className="highlight-pill-teal"><BouncyText text="Me" colorOffset={6} /></span>
-                    </h2>
-                    <div className="section-divider" />
+  return (
+    <section id="about" className="relative overflow-hidden bg-[#050505] text-white py-16">
+      <div className="absolute top-[12%] left-[6%] h-52 w-52 rounded-full bg-[#2563eb]/20 blur-3xl" />
+      <div className="absolute bottom-[8%] right-[7%] h-52 w-52 rounded-full bg-[#f59e0b]/20 blur-3xl" />
+
+      <div className="relative z-10 mx-auto w-full max-w-[1450px] px-4 sm:px-6 lg:px-8">
+        <div className="mb-10 flex items-end justify-between gap-4 flex-wrap">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-slate-400">About</p>
+            <h2 className="mt-2 text-4xl md:text-5xl font-black font-display text-white">Who I Am</h2>
+          </div>
+          <div className="h-[2px] w-24 bg-gradient-to-r from-[#2563eb] to-[#f59e0b] rounded-full" />
+        </div>
+
+        <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
+          <motion.div initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="xl:col-span-5 rounded-3xl border border-slate-700 bg-slate-900/70 p-7 smooth-card">
+            <h3 className="text-2xl font-black text-white">Profile Summary</h3>
+            <p className="mt-4 text-slate-300 leading-relaxed">{profile.basics.summary}</p>
+
+            <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {quickFacts.map((fact) => (
+                <div key={fact.label} className="rounded-2xl border border-slate-700 bg-slate-950/60 p-4 smooth-card">
+                  <div className="mb-2 inline-flex h-9 w-9 items-center justify-center rounded-xl bg-[#2563eb]/20 text-[#2563eb]">
+                    <fact.icon size={18} />
+                  </div>
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-slate-400">{fact.label}</p>
+                  <p className="mt-1 text-sm font-semibold text-white">{fact.value}</p>
                 </div>
-
-                <div className="max-w-5xl mx-auto">
-                    <motion.div
-                        initial={false}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, amount: 0.1 }}
-                        className="text-center"
-                    >
-                        <h3 className="text-2xl md:text-3xl font-display font-black mb-6 text-text-primary">
-                            Passionate developer crafting <span className="text-accent-teal italic">digital experiences</span>
-                        </h3>
-                        <p className="text-lg text-text-secondary mb-6 leading-relaxed">
-                            I am a MERN Stack Developer with a deep love for Data Structures and Algorithms.
-                            My journey started with a curiosity for how things work under the hood,
-                            leading me to master full-stack development. I thrive on building
-                            scalable, efficient, and user-centric applications.
-                        </p>
-                        <p className="text-lg text-text-secondary mb-10 leading-relaxed">
-                            When I'm not coding, you'll find me solving problems on LeetCode or
-                            exploring the latest trends in web technology. I believe in continuous
-                            learning and pushing the boundaries of what's possible on the web.
-                        </p>
-
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 mt-10">
-                            {stats.map((stat, i) => (
-                                <motion.div
-                                    key={i}
-                                    whileHover={{ y: -6, scale: 1.02 }}
-                                    className="bg-white rounded-2xl p-6 relative overflow-hidden group border-2 border-black"
-                                    style={{
-                                        boxShadow: `8px 8px 0px ${['#F4833D', '#F4C430', '#1A535C', '#E8699A'][i % 4]}`,
-                                    }}
-                                >
-                                    <div className="relative z-10">
-                                        <div className="flex items-center justify-center gap-2 mb-2">
-                                            <div
-                                                className="w-2.5 h-2.5 rounded-full"
-                                                style={{ background: ['#F4833D', '#F4C430', '#1A535C', '#E8699A'][i % 4] }}
-                                            />
-                                            <span className="text-[10px] font-black uppercase tracking-widest text-text-secondary">
-                                                {stat.label.split(' ')[0]}
-                                            </span>
-                                        </div>
-                                        <div className="flex items-baseline justify-center">
-                                            <AnimatedCounter value={stat.value} suffix={stat.suffix} />
-                                        </div>
-                                        <p className="text-[11px] font-bold text-text-secondary mt-1 uppercase tracking-tighter opacity-70">
-                                            {stat.label}
-                                        </p>
-                                    </div>
-                                    <div
-                                        className="absolute -bottom-6 -right-6 w-16 h-16 rounded-full opacity-5 group-hover:opacity-10 transition-opacity"
-                                        style={{ background: ['#F4833D', '#F4C430', '#1A535C', '#E8699A'][i % 4] }}
-                                    />
-                                </motion.div>
-                            ))}
-                        </div>
-                    </motion.div>
-                </div>
-
-                <div className="mt-32">
-                    <div className="text-center mb-16">
-                        <h3 className="text-3xl md:text-4xl font-display font-black text-text-primary mb-4">
-                            My Professional <span className="highlight-pill-orange">Journey</span>
-                        </h3>
-                        <p className="text-sm font-bold text-text-secondary uppercase tracking-[0.3em] opacity-40">Milestones & Growth</p>
-                    </div>
-                    <div className="mt-12">
-                        <Timeline />
-                    </div>
-                </div>
+              ))}
             </div>
-        </section>
-    );
+
+          </motion.div>
+
+          <motion.div initial={{ opacity: 0, y: 18 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="xl:col-span-7 rounded-3xl border border-slate-700 bg-slate-900/70 p-7 smooth-card">
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="text-2xl font-black text-white">Journey Timeline</h3>
+              <p className="text-xs uppercase tracking-[0.18em] text-slate-400">2023 - 2026</p>
+            </div>
+            <Timeline />
+
+            <div className="mt-8 border-t border-slate-700 pt-6">
+              <h4 className="text-sm uppercase tracking-[0.18em] text-slate-400">Hobbies</h4>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {hobbies.map((hobby) => (
+                  <span key={hobby} className="rounded-full border border-slate-700 bg-slate-950/60 px-3 py-1.5 text-xs text-slate-200">
+                    {hobby}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </div>
+    </section>
+  );
 };
 
 export default About;

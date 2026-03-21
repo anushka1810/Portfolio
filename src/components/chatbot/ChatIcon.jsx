@@ -78,8 +78,8 @@ const ChatIcon = ({ isOpen, hasInteracted, onClick }) => {
           color: '#FFFFFF',
           transition: 'background 0.3s ease',
         }}
-        aria-label={isOpen ? 'Close chat' : "Open chat with Anuj's assistant"}
-        title={isOpen ? 'Close chat' : "Chat with Anuj's assistant"}
+        aria-label={isOpen ? 'Close chat' : "Open chat with Anushka's assistant"}
+        title={isOpen ? 'Close chat' : "Chat with Anushka's assistant"}
       >
         <AnimatePresence mode="wait">
           <motion.span

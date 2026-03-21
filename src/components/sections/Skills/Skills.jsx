@@ -2,202 +2,201 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as IconsSI from 'react-icons/si';
 import * as IconsFA from 'react-icons/fa';
+import { FiZap } from 'react-icons/fi';
+import { 
+    Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, 
+    ResponsiveContainer, Tooltip 
+} from 'recharts';
 import { profile } from '../../../data/profile';
-import BouncyText from '../../ui/BouncyText';
 
 const Skills = () => {
     const [activeTab, setActiveTab] = useState('All Skills');
 
-    const containerVariants = {
-        hidden: { opacity: 0 },
-        visible: {
-            opacity: 1,
-            transition: {
-                staggerChildren: 0.05,
-                delayChildren: 0.1
-            }
-        }
-    };
-
-    const itemVariants = {
-        hidden: { y: 20, opacity: 0 },
-        visible: {
-            y: 0,
-            opacity: 1,
-            transition: {
-                type: 'spring',
-                stiffness: 100,
-                damping: 15
-            }
-        }
-    };
-
-    // Category based colors
+    // Category based colors (Midnight Bloom Palette)
     const categoryColors = {
-        'All Skills': '#6366f1', // Indigo/Purple
-        'ProgrammingLanguages': '#1A535C', // Teal
-        'Frontend': '#E8699A',  // Pink
-        'Backend': '#F4833D',   // Orange
-        'Databases': '#F4C430',  // Gold
-        'Tools': '#10b981'       // Emerald
+        'All Skills': '#FFFFFF',          // Multi-focus
+        'ProgrammingLanguages': '#9B5DE5', // Purple
+        'Frontend': '#2563eb',             // Neon Pink
+        'Backend': '#f59e0b',              // Electric Teal
+        'Databases': '#FEE440',            // Yellow
+        'Tools': '#4CC9F0'                 // Sky Blue
     };
 
-    const activeColor = categoryColors[activeTab] || '#1A535C';
+    const activeColor = categoryColors[activeTab] || '#2563eb';
+    const categories = ['All Skills', ...profile.skills.map(c => c.category)];
+    
+    // Logic for Chart Data
+    let chartData = [];
+    let displayedSkills = [];
 
-    const allCategories = ['All Skills', ...profile.skills.map(c => c.category)];
+    if (activeTab === 'All Skills') {
+        // Overview: Average of each category
+        chartData = profile.skills.map(cat => {
+            const avg = Math.round(cat.skills.reduce((acc, s) => acc + s.proficiency, 0) / cat.skills.length);
+            return { subject: cat.category === 'ProgrammingLanguages' ? 'Langs' : cat.category, A: avg, fullMark: 100 };
+        });
+        displayedSkills = profile.skills.flatMap(c => c.skills);
+    } else {
+        const activeCategoryData = profile.skills.find(c => c.category === activeTab);
+        chartData = activeCategoryData?.skills.map(s => ({
+            subject: s.name,
+            A: s.proficiency,
+            fullMark: 100,
+        })) || [];
+        displayedSkills = activeCategoryData?.skills || [];
+    }
 
-    const displayedSkills = activeTab === 'All Skills'
-        ? profile.skills.flatMap(c => c.skills)
-        : (profile.skills.find(c => c.category === activeTab)?.skills || []);
+    const CustomTooltip = ({ active, payload }) => {
+        if (active && payload && payload.length) {
+            return (
+                <div className="bg-[#1A1A1A] border border-slate-700 p-2 rounded-lg shadow-xl backdrop-blur-md">
+                    <p className="text-[10px] font-black text-white uppercase tracking-widest mb-1">{payload[0].payload.subject}</p>
+                    <p className="text-sm font-bold" style={{ color: activeColor }}>{payload[0].value}%</p>
+                </div>
+            );
+        }
+        return null;
+    };
 
     return (
-        <section id="skills" className="py-10 relative overflow-hidden bg-[#FDFCF0]">
+        <section id="skills" className="py-20 relative overflow-hidden bg-[#050505] text-white">
             {/* Background Decorative Elements */}
-            <div className="absolute top-20 left-10 w-32 h-32 bg-accent-teal/5 rounded-full blur-3xl" />
-            <div className="absolute bottom-20 right-10 w-40 h-40 bg-accent-pink/5 rounded-full blur-3xl" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-accent-gold/3 border-[1px] border-dashed border-accent-gold/20 rounded-full animate-spin-slow pointer-events-none" />
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none">
+                <div className="absolute top-[20%] -left-[10%] w-[40%] h-[40%] bg-[#2563eb]/5 rounded-full blur-[120px]" />
+                <div className="absolute bottom-[20%] -right-[10%] w-[40%] h-[40%] bg-[#f59e0b]/5 rounded-full blur-[120px]" />
+            </div>
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-display font-black mb-5">
-                        <BouncyText text="My " />
-                        <span className="highlight-pill-teal"><BouncyText text="Skills" colorOffset={3} /></span>
+                    <h2 className="text-4xl md:text-5xl font-display font-black mb-5 text-white">
+                        My <span className="text-[#2563eb]">Skills</span>
                     </h2>
-                    <div className="section-divider" />
-                    <p className="max-w-xl mx-auto text-text-secondary font-medium text-lg mt-6">
-                        A curated showcase of my technical expertise, spanning frontend magic, backend robustness, and core mastery.
+                    <div className="w-20 h-1 bg-gradient-to-r from-[#2563eb] to-[#f59e0b] mx-auto rounded-full" />
+                    <p className="max-w-xl mx-auto text-slate-300 font-medium text-lg mt-6">
+                        Visualizing technical mastery through data and interactive representation.
                     </p>
                 </div>
 
                 {/* Tabs */}
-                <div className="flex flex-wrap justify-center gap-3 mb-16">
-                    {allCategories.map((catName) => {
+                <div className="flex flex-wrap justify-center gap-3 mb-12">
+                    {categories.map((catName) => {
                         const isActive = activeTab === catName;
-                        const catColor = categoryColors[catName] || '#1A535C';
+                        const catColor = categoryColors[catName] || '#2563eb';
 
                         return (
                             <motion.button
                                 key={catName}
                                 onClick={() => setActiveTab(catName)}
-                                whileHover={{ y: -4, scale: 1.02 }}
-                                whileTap={{ scale: 0.98 }}
-                                className={`px-6 py-2.5 font-black text-[13px] uppercase tracking-widest transition-all duration-300 relative overflow-hidden group`}
-                                style={{
-                                    border: "3px solid #1A1A1A",
-                                    borderRadius: "1rem",
-                                    background: isActive ? catColor : "white",
-                                    color: isActive ? 'white' : '#1A1A1A',
-                                    boxShadow: isActive ? `6px 6px 0px #1A1A1A` : `4px 4px 0px #1A1A1A`,
-                                }}
+                                whileHover={{ y: -4, scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                className={`px-6 py-2 font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-300 rounded-full border ${
+                                    isActive 
+                                    ? 'bg-slate-900/70 text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.3)]' 
+                                    : 'bg-slate-900/70 text-slate-300 border-slate-700 hover:border-white/30'
+                                }`}
                             >
-                                <span className="relative z-10">{catName}</span>
-                                {!isActive && (
-                                    <div
-                                        className="absolute inset-0 translate-y-full group-hover:translate-y-0 transition-transform duration-300"
-                                        style={{ background: `${catColor}15` }}
-                                    />
-                                )}
+                                {catName === 'ProgrammingLanguages' ? 'Langs' : catName === 'All Skills' ? 'Overview' : catName}
                             </motion.button>
                         );
                     })}
                 </div>
 
-                {/* Skills Grid */}
-                <AnimatePresence mode="wait">
-                    <motion.div
-                        key={activeTab}
-                        variants={containerVariants}
-                        initial="hidden"
-                        animate="visible"
-                        exit={{ opacity: 0, scale: 0.95, transition: { duration: 0.2 } }}
-                        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                    {/* ── Chart Section ── */}
+                    <motion.div 
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        className="lg:col-span-5 h-[400px] bg-slate-900/70 backdrop-blur-xl rounded-3xl border border-slate-700 p-6 flex flex-col items-center justify-center relative group smooth-card"
+                        style={{ borderBottom: `4px solid ${activeColor}` }}
                     >
-                        {displayedSkills.map((skill) => {
-                            const IconComponent = IconsSI[skill.icon] || IconsFA[skill.icon];
-                            // If showing all skills, use a color mapping or fallback for icons
-                            const skillColor = activeTab === 'All Skills' ? '#1A535C' : activeColor;
-
-                            return (
-                                <motion.div
-                                    key={`${activeTab}-${skill.name}`}
-                                    variants={itemVariants}
-                                    whileHover={{ y: -8, rotate: 0.5 }}
-                                    className="bg-white rounded-3xl p-8 relative overflow-hidden group border-[3px] border-[#1A1A1A]"
-                                    style={{
-                                        boxShadow: `8px 8px 0px ${skillColor}`
-                                    }}
-                                >
-                                    {/* Decorative elements */}
-                                    <div
-                                        className="absolute -top-12 -right-12 w-24 h-24 rounded-full opacity-5 group-hover:opacity-10 transition-all duration-500 scale-100 group-hover:scale-150"
-                                        style={{ background: skillColor }}
-                                    />
-                                    <div
-                                        className="absolute -bottom-6 -left-6 w-16 h-16 rounded-full opacity-5 group-hover:opacity-10 transition-all duration-500"
-                                        style={{ background: skillColor }}
-                                    />
-
-                                    <div className="flex justify-between items-end mb-6">
-                                        <div className="flex flex-col">
-                                            <div className="mb-3 text-3xl transition-transform duration-300 group-hover:scale-110" style={{ color: skillColor }}>
-                                                {IconComponent ? <IconComponent /> : <div className="w-8 h-1.5 rounded-full" style={{ background: skillColor }} />}
-                                            </div>
-                                            <h4 className="text-text-primary font-black text-2xl tracking-tight">{skill.name}</h4>
-                                        </div>
-                                        <div className="flex flex-col items-end">
-                                            <span
-                                                className="text-3xl font-black italic opacity-20 group-hover:opacity-100 transition-opacity duration-500"
-                                                style={{ color: skillColor }}
-                                            >
-                                                {skill.proficiency}%
-                                            </span>
-                                        </div>
-                                    </div>
-                                    {/* ... rest of content */}
-
-
-                                    {/* Progress Bar Container */}
-                                    <div className="relative pt-2">
-                                        <div className="w-full h-4 bg-bg-primary/50 border-2 border-[#1A1A1A] rounded-full overflow-hidden p-[2px]">
-                                            <motion.div
-                                                initial={{ width: 0 }}
-                                                whileInView={{ width: `${skill.proficiency}%` }}
-                                                transition={{ duration: 1.5, ease: "circOut" }}
-                                                viewport={{ once: true }}
-                                                className="h-full rounded-full relative overflow-hidden"
-                                                style={{ background: skillColor }}
-                                            >
-                                                {/* Glossy overlay */}
-                                                <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent" />
-
-                                                {/* Animated Shine */}
-                                                <motion.div
-                                                    className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent w-full"
-                                                    animate={{ x: ['-100%', '100%'] }}
-                                                    transition={{ duration: 2, repeat: Infinity, ease: 'linear', repeatDelay: 1 }}
-                                                />
-                                            </motion.div>
-                                        </div>
-
-                                        {/* Tick marker */}
-                                        <div
-                                            className="absolute -top-4 w-4 h-4 bg-[#1A1A1A] rotate-45 group-hover:scale-125 transition-transform duration-300"
-                                            style={{ left: `calc(${skill.proficiency}% - 8px)` }}
-                                        />
-                                    </div>
-
-                                    <div className="mt-6 flex justify-between items-center text-[10px] font-bold text-gray-400 uppercase tracking-widest">
-                                        <span>PROFICIENCY</span>
-                                        <span style={{ color: skillColor }}>{skill.proficiency > 85 ? 'Expert' : 'Advanced'}</span>
-                                    </div>
-                                </motion.div>
-                            );
-                        })}
+                        <div className="absolute top-4 left-6">
+                            <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">PRO-CHART</span>
+                            <h4 className="text-sm font-bold text-white">{activeTab === 'All Skills' ? 'Overall' : activeTab} Mastery</h4>
+                        </div>
+                        
+                        <ResponsiveContainer width="100%" height="100%">
+                            <RadarChart cx="50%" cy="55%" outerRadius="70%" data={chartData}>
+                                <PolarGrid stroke="rgba(255,255,255,0.1)" />
+                                <PolarAngleAxis 
+                                    dataKey="subject" 
+                                    tick={{ fill: '#9ca3af', fontSize: 10, fontWeight: 'bold' }} 
+                                />
+                                <PolarRadiusAxis 
+                                    angle={30} 
+                                    domain={[0, 100]} 
+                                    tick={false} 
+                                    axisLine={false} 
+                                />
+                                <Radar
+                                    name="Proficiency"
+                                    dataKey="A"
+                                    stroke={activeColor}
+                                    fill={activeColor}
+                                    fillOpacity={0.4}
+                                />
+                                <Tooltip content={<CustomTooltip />} />
+                            </RadarChart>
+                        </ResponsiveContainer>
                     </motion.div>
-                </AnimatePresence>
+
+                    {/* ── Skills Data/Grid ── */}
+                    <div className="lg:col-span-7 max-h-[500px] overflow-y-auto custom-scrollbar pr-4">
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={activeTab}
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                exit={{ opacity: 0, x: -20 }}
+                                className="grid grid-cols-2 sm:grid-cols-3 gap-4"
+                            >
+                                {displayedSkills.map((skill, i) => {
+                                    const IconComponent = IconsSI[skill.icon] || IconsFA[skill.icon];
+                                    // Use original category group color if in All Skills
+                                    let skillColor = activeColor;
+                                    if (activeTab === 'All Skills') {
+                                        const cat = profile.skills.find(c => c.skills.some(s => s.name === skill.name));
+                                        skillColor = categoryColors[cat?.category] || activeColor;
+                                    }
+
+                                    return (
+                                        <motion.div
+                                            key={`${activeTab}-${skill.name}`}
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: i * 0.02 }}
+                                            className="bg-slate-900/70 backdrop-blur-md p-4 rounded-2xl border border-slate-700 flex flex-col items-center justify-center text-center group transition-all duration-300 hover:-translate-y-2 hover:bg-slate-800/70 hover:border-slate-700 hover:shadow-[0_10px_20px_-5px_rgba(255,255,255,0.1)] smooth-card"
+                                        >
+                                            <div 
+                                                className="w-10 h-10 rounded-xl mb-3 flex items-center justify-center text-white text-xl transition-transform group-hover:scale-110"
+                                                style={{ background: `${skillColor}20`, border: `1px solid ${skillColor}40` }}
+                                            >
+                                                {IconComponent ? <IconComponent /> : <FiZap />}
+                                            </div>
+                                            <h5 className="text-[11px] font-black uppercase tracking-wider text-white mb-1 leading-tight">{skill.name}</h5>
+                                            <div className="w-full flex items-center gap-2 px-1">
+                                                <div className="h-1 flex-1 bg-slate-900/70 rounded-full overflow-hidden">
+                                                    <motion.div 
+                                                        initial={{ width: 0 }}
+                                                        whileInView={{ width: `${skill.proficiency}%` }}
+                                                        transition={{ duration: 1 }}
+                                                        className="h-full rounded-full"
+                                                        style={{ background: skillColor }}
+                                                    />
+                                                </div>
+                                                <span className="text-[9px] font-bold text-gray-500">{skill.proficiency}%</span>
+                                            </div>
+                                        </motion.div>
+                                    );
+                                })}
+                            </motion.div>
+                        </AnimatePresence>
+                    </div>
+                </div>
             </div>
         </section>
     );
 };
 
 export default Skills;
+
+

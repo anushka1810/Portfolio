@@ -1,26 +1,26 @@
 [
-    {
-        "title": "HackerRank Software Engineer Intern Certification",
-        "description": "Verified certification demonstrating proficiency in software engineering fundamentals.",
-        "date": "2023",
-        "icon": "📜"
-    },
-    {
-        "title": "Java (Basic) Certified",
-        "description": "Certified by HackerRank for core Java programming skills.",
-        "date": "2023",
-        "icon": "☕"
-    },
-    {
-        "title": "700+ DSA Problems Solved",
-        "description": "Milestone achieved across LeetCode, GFG, and CodeChef.",
-        "date": "2024",
-        "icon": "🚀"
-    },
-    {
-        "title": "Codechef 3-Star Coder",
-        "description": "Achieved a rating of 1441 and consistently performed in division contests.",
-        "date": "2023",
-        "icon": "⭐"
-    }
+  {
+    "title": "Solved 550+ DSA Problems",
+    "description": "Strengthened algorithmic skills and problem-solving across LeetCode, HackerRank, GeeksforGeeks, and other coding platforms.",
+    "date": "Mar 2026",
+    "icon": "??"
+  },
+  {
+    "title": "Completed Graph Camp by Algo University",
+    "description": "Achieved Hall of Fame and solved 15+ problems of Competitive Programming on Graph theory.",
+    "date": "Nov 2025",
+    "icon": "??"
+  },
+  {
+    "title": "5-Star Rating in Java on HackerRank",
+    "description": "Demonstrated strong coding skills and consistent problem-solving accuracy on a global competitive platform.",
+    "date": "Oct 2025",
+    "icon": "?"
+  },
+  {
+    "title": "10+ Skill Badges on MongoDB Atlas",
+    "description": "Earned 10+ skill badges on MongoDB Atlas & MongoDB University, demonstrating proficiency in database design and CRUD operations.",
+    "date": "Jun 2025",
+    "icon": "??"
+  }
 ]

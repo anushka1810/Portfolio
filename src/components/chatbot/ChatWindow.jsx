@@ -83,7 +83,7 @@ const ChatWindow = ({ messages, isTyping, inputValue, setInputValue, onSend, onC
           </div>
           <div>
             <p className="font-black text-white text-sm leading-tight" style={{ fontFamily: "'Bricolage Grotesque', sans-serif" }}>
-              Ask about Anuj's CV
+              Ask about Anushka's CV
             </p>
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
@@ -138,7 +138,7 @@ const ChatWindow = ({ messages, isTyping, inputValue, setInputValue, onSend, onC
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Ask a question about Anuj..."
+          placeholder="Ask a question about Anushka..."
           maxLength={200}
           className="flex-1 px-3.5 py-2 text-sm rounded-full outline-none border-2 border-black"
           style={{

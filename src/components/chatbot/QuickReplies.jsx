@@ -2,13 +2,13 @@ import React from 'react';
 import { motion } from 'framer-motion';
 
 const QUICK_REPLIES = [
-  "What are Anuj's skills? 💻",
-  "Show me his projects 🚀",
-  "What are his achievements? 🏆",
-  "His certifications 📜",
-  "How to contact him? 📬",
+  "What are Anushka's skills? 💻",
+  "Show me her projects 🚀",
+  "What are her achievements? 🏆",
+  "Her certifications 📜",
+  "How to contact her? 📬",
   "Tell me about Nivana 🧘",
-  "His education 🎓",
+  "Her education 🎓",
   "DSA profiles 📊",
 ];
 
