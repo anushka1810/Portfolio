@@ -9,7 +9,7 @@ import Achievements from './components/sections/Achievements/Achievements';
 import Certifications from './components/sections/Certifications/Certifications';
 import Resume from './components/sections/Resume/Resume';
 import Contact from './components/sections/Contact/Contact';
-import PageTransition from './components/layout/PageTransition';
+import CursorAura from './components/layout/CursorAura';
 import ChatBot from './components/chatbot/ChatBot';
 
 function App() {
@@ -65,23 +65,22 @@ function App() {
   }, [activeSection]);
 
   return (
-    <PageTransition>
-      <div className="app-shell min-h-screen text-white">
-        <Navbar
-          activeSection={activeSection}
-          onNavigate={setActiveSection}
-          theme={theme}
-          onToggleTheme={() => setTheme((prev) => (prev === 'night' ? 'day' : 'night'))}
-        />
-        <main>{sectionView}</main>
-        <footer className="border-t border-slate-800 bg-[#050505] py-10 text-center">
-          <p className="text-sm uppercase tracking-[0.2em] text-slate-400">Anushka Surya - Portfolio</p>
-          <p className="mt-2 text-xs text-slate-500">{new Date().getFullYear()} - Designed and built with React + Framer Motion</p>
-        </footer>
+    <div className="app-shell min-h-screen text-white">
+      <CursorAura />
+      <Navbar
+        activeSection={activeSection}
+        onNavigate={setActiveSection}
+        theme={theme}
+        onToggleTheme={() => setTheme((prev) => (prev === 'night' ? 'day' : 'night'))}
+      />
+      <main>{sectionView}</main>
+      <footer className="border-t border-slate-800 bg-[#050505] py-10 text-center">
+        <p className="text-sm uppercase tracking-[0.2em] text-slate-400">Anushka Surya - Portfolio</p>
+        <p className="mt-2 text-xs text-slate-500">{new Date().getFullYear()} - Designed and built with React + Framer Motion</p>
+      </footer>
 
-        <ChatBot />
-      </div>
-    </PageTransition>
+      <ChatBot />
+    </div>
   );
 }
 

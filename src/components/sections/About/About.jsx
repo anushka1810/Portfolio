@@ -57,10 +57,17 @@ const About = () => {
             <div className="mt-8 border-t border-slate-700 pt-6">
               <h4 className="text-sm uppercase tracking-[0.18em] text-slate-400">Hobbies</h4>
               <div className="mt-3 flex flex-wrap gap-2">
-                {hobbies.map((hobby) => (
-                  <span key={hobby} className="rounded-full border border-slate-700 bg-slate-950/60 px-3 py-1.5 text-xs text-slate-200">
+                {hobbies.map((hobby, idx) => (
+                  <motion.span
+                    key={hobby}
+                    initial={{ opacity: 0, y: 6 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.25, delay: idx * 0.04 }}
+                    className="rounded-full border border-slate-700 bg-slate-950/60 px-3 py-1.5 text-xs text-slate-200"
+                  >
                     {hobby}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
             </div>

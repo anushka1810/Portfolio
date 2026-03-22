@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import * as IconsSI from 'react-icons/si';
 import * as IconsFA from 'react-icons/fa';
 import { FiZap } from 'react-icons/fi';
+import gsap from 'gsap';
 import { 
     Radar, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, 
     ResponsiveContainer, Tooltip 
@@ -11,6 +12,9 @@ import { profile } from '../../../data/profile';
 
 const Skills = () => {
     const [activeTab, setActiveTab] = useState('All Skills');
+    const chartShellRef = useRef(null);
+    const chartGlowRef = useRef(null);
+    const chartRingRef = useRef(null);
 
     // Category based colors (Midnight Bloom Palette)
     const categoryColors = {
@@ -24,6 +28,37 @@ const Skills = () => {
 
     const activeColor = categoryColors[activeTab] || '#2563eb';
     const categories = ['All Skills', ...profile.skills.map(c => c.category)];
+
+    useEffect(() => {
+        const shell = chartShellRef.current;
+        const glow = chartGlowRef.current;
+        const ring = chartRingRef.current;
+        if (!shell || !glow || !ring) return;
+
+        const floatTl = gsap.timeline({ repeat: -1, yoyo: true });
+        floatTl.to(shell, { y: -8, duration: 2.4, ease: 'sine.inOut' });
+
+        gsap.to(glow, {
+            opacity: 0.75,
+            scale: 1.08,
+            duration: 1.8,
+            ease: 'sine.inOut',
+            repeat: -1,
+            yoyo: true,
+        });
+
+        gsap.to(ring, {
+            rotate: 360,
+            duration: 18,
+            ease: 'none',
+            repeat: -1,
+        });
+
+        return () => {
+            floatTl.kill();
+            gsap.killTweensOf([shell, glow, ring]);
+        };
+    }, []);
     
     // Logic for Chart Data
     let chartData = [];
@@ -68,11 +103,11 @@ const Skills = () => {
 
             <div className="container mx-auto px-6 relative z-10">
                 <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-display font-black mb-5 text-white">
+                    <h2 className="text-4xl md:text-6xl font-display font-black mb-5 text-white tracking-tight">
                         My <span className="text-[#2563eb]">Skills</span>
                     </h2>
-                    <div className="w-20 h-1 bg-gradient-to-r from-[#2563eb] to-[#f59e0b] mx-auto rounded-full" />
-                    <p className="max-w-xl mx-auto text-slate-300 font-medium text-lg mt-6">
+                    <div className="w-24 h-1.5 bg-gradient-to-r from-[#2563eb] via-[#60a5fa] to-[#f59e0b] mx-auto rounded-full shadow-[0_0_18px_rgba(96,165,250,0.35)]" />
+                    <p className="max-w-2xl mx-auto text-slate-300 font-medium text-lg mt-6 leading-relaxed">
                         Visualizing technical mastery through data and interactive representation.
                     </p>
                 </div>
@@ -89,10 +124,10 @@ const Skills = () => {
                                 onClick={() => setActiveTab(catName)}
                                 whileHover={{ y: -4, scale: 1.05 }}
                                 whileTap={{ scale: 0.95 }}
-                                className={`px-6 py-2 font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-300 rounded-full border ${
+                                className={`px-7 py-2.5 font-black text-[11px] uppercase tracking-[0.2em] transition-all duration-300 rounded-full border ${
                                     isActive 
-                                    ? 'bg-slate-900/70 text-black border-white shadow-[0_0_20px_rgba(255,255,255,0.3)]' 
-                                    : 'bg-slate-900/70 text-slate-300 border-slate-700 hover:border-white/30'
+                                    ? 'bg-slate-950/85 text-white border-white shadow-[0_0_26px_rgba(255,255,255,0.38)]' 
+                                    : 'bg-slate-900/70 text-slate-300 border-slate-700 hover:border-cyan-300/45 hover:text-white'
                                 }`}
                             >
                                 {catName === 'ProgrammingLanguages' ? 'Langs' : catName === 'All Skills' ? 'Overview' : catName}
@@ -106,9 +141,20 @@ const Skills = () => {
                     <motion.div 
                         initial={{ opacity: 0, scale: 0.9 }}
                         whileInView={{ opacity: 1, scale: 1 }}
-                        className="lg:col-span-5 h-[400px] bg-slate-900/70 backdrop-blur-xl rounded-3xl border border-slate-700 p-6 flex flex-col items-center justify-center relative group smooth-card"
+                        className="lg:col-span-5 h-[400px] bg-slate-900/70 backdrop-blur-xl rounded-3xl border border-slate-700 p-6 flex flex-col items-center justify-center relative group smooth-card overflow-hidden"
                         style={{ borderBottom: `4px solid ${activeColor}` }}
+                        ref={chartShellRef}
                     >
+                        <div
+                            ref={chartGlowRef}
+                            className="pointer-events-none absolute inset-0 opacity-50"
+                            style={{ background: `radial-gradient(circle at 50% 50%, ${activeColor}28 0%, transparent 60%)` }}
+                        />
+                        <div
+                            ref={chartRingRef}
+                            className="pointer-events-none absolute inset-5 rounded-full border border-dashed"
+                            style={{ borderColor: `${activeColor}66` }}
+                        />
                         <div className="absolute top-4 left-6">
                             <span className="text-[10px] font-black uppercase tracking-widest text-gray-500">PRO-CHART</span>
                             <h4 className="text-sm font-bold text-white">{activeTab === 'All Skills' ? 'Overall' : activeTab} Mastery</h4>
@@ -140,14 +186,14 @@ const Skills = () => {
                     </motion.div>
 
                     {/* ── Skills Data/Grid ── */}
-                    <div className="lg:col-span-7 max-h-[500px] overflow-y-auto custom-scrollbar pr-4">
+                    <div className="lg:col-span-7 pr-0 lg:pr-1">
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={activeTab}
                                 initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
                                 exit={{ opacity: 0, x: -20 }}
-                                className="grid grid-cols-2 sm:grid-cols-3 gap-4"
+                                className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4"
                             >
                                 {displayedSkills.map((skill, i) => {
                                     const IconComponent = IconsSI[skill.icon] || IconsFA[skill.icon];
